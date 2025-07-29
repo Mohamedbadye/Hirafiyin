@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hirafiyin - Plateforme pour Artisans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* تخصيصات CSS */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 0 20px;
+        }
+        
+        .btn-custom {
+            padding: 12px 30px;
+            font-weight: bold;
+            border-radius: 30px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary-custom {
+            background-color: #0d6efd;
+            border: 2px solid #0d6efd;
+        }
+        
+        .btn-outline-custom {
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline-custom:hover {
+            background-color: white;
+            color: #0d6efd;
+        }
+        
+        .features-section {
+            padding: 80px 0;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #0d6efd;
+        }
+        
+        .testimonials-section {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .testimonial-card {
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: #0d6efd;
+        }
+        
+        /* Animation for video fade */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hammer me-2"></i>Hirafiyin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Fonctionnalités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#artisans">Artisans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Témoignages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="login.html" class="btn btn-outline-light">Connexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Video Background -->
+    <section class="hero-section">
+        <!-- Video Slideshow -->
+        <video autoplay muted loop id="video1" class="video-background fade-in">
+            <source src="backgroundh.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video2" class="video-background d-none">
+            <source src="vid1.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video3" class="video-background d-none">
+            <source src="vid2.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video3" class="video-background d-none">
+            <source src="vid3.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video3" class="video-background d-none">
+            <source src="vid4.mp4" type="video/mp4">
+        </video>
+        
+        <div class="hero-content">
+            <div class="container text-center">
+                <h1 class="display-3 fw-bold mb-4">Trouvez le meilleur artisan pour votre projet</h1>
+                <p class="lead mb-5">Plateforme de mise en relation entre clients et artisans qualifiés</p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center">
+                    <a href="register.html" class="btn btn-primary btn-custom btn-primary-custom">
+                        <i class="fas fa-user-plus me-2"></i>S'inscrire
+                    </a>
+                    <a href="login.html" class="btn btn-outline-light btn-custom btn-outline-custom">
+                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Pourquoi choisir Hirafiyin ?</h2>
+                <p class="lead text-muted">La solution complète pour tous vos besoins en artisanat</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Trouvez facilement</h3>
+                        <p class="text-muted">Recherchez des artisans qualifiés près de chez vous en quelques clics.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Artisans vérifiés</h3>
+                        <p class="text-muted">Tous nos artisans sont vérifiés et évalués par la communauté.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Paiement sécurisé</h3>
+                        <p class="text-muted">Système de paiement intégré et sécurisé pour votre tranquillité d'esprit.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Messagerie instantanée</h3>
+                        <p class="text-muted">Communiquez directement avec les artisans via notre plateforme.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Réservation en ligne</h3>
+                        <p class="text-muted">Planifiez des rendez-vous selon vos disponibilités.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Garantie de qualité</h3>
+                        <p class="text-muted">Nous garantissons la qualité des services fournis par nos artisans.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artisans Section -->
+    <section id="artisans" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Nos Artisans</h2>
+                <p class="lead text-muted">Découvrez nos professionnels qualifiés</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1581093450021-4a7360e9a6a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Plombier">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Plombiers</h5>
+                            <p class="card-text text-muted">Résolvez tous vos problèmes de plomberie avec nos experts.</p>
+                            <a href="#" class="btn btn-outline-primary">Voir les profils</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Électricien">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Électriciens</h5>
+                            <p class="card-text text-muted">Installations et réparations électriques en toute sécurité.</p>
+                            <a href="#" class="btn btn-outline-primary">Voir les profils</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Peintre">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Peintres</h5>
+                            <p class="card-text text-muted">Donnez une nouvelle vie à vos murs avec nos peintres professionnels.</p>
+                            <a href="#" class="btn btn-outline-primary">Voir les profils</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Ce que disent nos clients</h2>
+                <p class="lead text-muted">Découvrez les expériences de nos utilisateurs</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card bg-white">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-4">"J'ai trouvé un excellent plombier en moins de 10 minutes. Le service était rapide et professionnel."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3" width="50" alt="Client">
+                            <div>
+                                <h6 class="mb-0">Sophie Martin</h6>
+                                <small class="text-muted">Alger</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card bg-white">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-4">"L'électricien que j'ai contacté est arrivé à l'heure et a résolu mon problème en un temps record. Je recommande!"</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-3" width="50" alt="Client">
+                            <div>
+                                <h6 class="mb-0">Karim Boudiaf</h6>
+                                <small class="text-muted">Oran</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card bg-white">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="mb-4">"La peinture de mon appartement a été faite avec soin et dans les délais. Très satisfaite du résultat final."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-3" width="50" alt="Client">
+                            <div>
+                                <h6 class="mb-0">Leila Boukadoum</h6>
+                                <small class="text-muted">Constantine</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center py-5">
+            <h2 class="display-5 fw-bold mb-4">Prêt à trouver l'artisan parfait ?</h2>
+            <p class="lead mb-5">Rejoignez notre communauté dès aujourd'hui</p>
+            <a href="register.html" class="btn btn-light btn-lg px-5 py-3 fw-bold">Commencer maintenant</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h2 class="display-5 fw-bold mb-4">Contactez-nous</h2>
+                    <p class="lead text-muted">Vous avez des questions ? Notre équipe est là pour vous aider.</p>
+                    
+                    <div class="mt-5">
+                        <div class="d-flex mb-4">
+                            <div class="me-4 text-primary">
+                                <i class="fas fa-map-marker-alt fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Adresse</h5>
+                                <p class="text-muted mb-0">123 Rue des Artisans, Alger, Algérie</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="me-4 text-primary">
+                                <i class="fas fa-phone-alt fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Téléphone</h5>
+                                <p class="text-muted mb-0">+213 123 456 789</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex">
+                            <div class="me-4 text-primary">
+                                <i class="fas fa-envelope fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Email</h5>
+                                <p class="text-muted mb-0">contact@hirafiyin.dz</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-5">
+                            <h3 class="mb-4">Envoyez-nous un message</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Votre nom">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control form-control-lg" placeholder="Votre email">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Sujet">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control form-control-lg" rows="5" placeholder="Votre message"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Envoyer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">Hirafiyin</h5>
+                    <p>La plateforme de référence pour trouver des artisans qualifiés en Algérie.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Liens utiles</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white">Accueil</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">À propos</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Services</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Artisans</a></li>
+                        <li><a href="#" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Catégories</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white">Plombiers</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Électriciens</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Peintres</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Menuisiers</a></li>
+                        <li><a href="#" class="text-white">Plus...</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="text-uppercase mb-4">Newsletter</h5>
+                    <p>Abonnez-vous pour recevoir nos dernières actualités et offres.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Votre email">
+                        <button class="btn btn-primary" type="button">S'abonner</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Hirafiyin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Video Slideshow Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = [
+                document.getElementById('video1'),
+                document.getElementById('video2'),
+                document.getElementById('video3')
+            ];
+            
+            let currentVideo = 0;
+            
+            // Fonction pour changer de vidéo
+            function changeVideo() {
+                // Masquer la vidéo actuelle
+                videos[currentVideo].classList.remove('fade-in');
+                videos[currentVideo].classList.add('d-none');
+                
+                // Passer à la vidéo suivante
+                currentVideo = (currentVideo + 1) % videos.length;
+                
+                // Afficher la nouvelle vidéo
+                videos[currentVideo].classList.remove('d-none');
+                videos[currentVideo].classList.add('fade-in');
+                
+                // Redémarrer la vidéo (pour le cas où elle serait déjà terminée)
+                videos[currentVideo].currentTime = 0;
+                videos[currentVideo].play();
+            }
+            
+            // Changer de vidéo toutes les 8 secondes
+            setInterval(changeVideo, 8000);
+            
+            // Démarrer la première vidéo
+            videos[0].play();
+        });
+    </script>
+</body>
+</html>

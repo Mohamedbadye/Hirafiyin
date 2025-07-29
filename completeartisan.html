@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إكمال ملف الحرفي - حِرَافة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .upload-area {
+      border: 2px dashed #ccc;
+      transition: all 0.3s;
+    }
+    .upload-area:hover {
+      border-color: #3b82f6;
+    }
+    #previewImage {
+      max-height: 200px;
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl overflow-hidden">
+    <!-- شريط التقدم -->
+    <div class="bg-blue-600 text-white p-4">
+      <h1 class="text-xl font-bold text-center">أكمل ملفك الشخصي (خطوة 2/2)</h1>
+      <div class="w-full bg-blue-200 rounded-full h-2.5 mt-2">
+        <div class="bg-blue-50 h-2.5 rounded-full" style="width: 100%"></div>
+      </div>
+    </div>
+
+    <form id="completeProfileForm" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- العمود الأول -->
+      <div class="space-y-6">
+        <!-- صورة البروفايل -->
+        <div class="text-center">
+          <div class="upload-area relative rounded-full w-32 h-32 mx-auto mb-4 cursor-pointer overflow-hidden" id="uploadContainer">
+            <input type="file" id="profileImage" accept="image/*" class="hidden">
+            <img id="previewImage" class="w-full h-full object-cover">
+            <div id="uploadPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500">
+              <i class="fas fa-camera text-2xl mb-2"></i>
+              <span class="text-xs">اضغط لإضافة صورة</span>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500">الصورة يجب أن تكون واضحة وبتنسيق JPG أو PNG</p>
+        </div>
+
+        <!-- التخصص -->
+        <div>
+          <label for="specialty" class="block text-sm font-medium text-gray-700 mb-1">التخصص الرئيسي *</label>
+          <select id="specialty" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">اختر تخصصك</option>
+            <option value="كهرباء">كهرباء منازل</option>
+            <option value="سباكة">سباكة</option>
+            <option value="نجارة">نجارة</option>
+            <option value="بناء">بناء وتشييد</option>
+            <option value="دهان">دهان وديكور</option>
+            <option value="تكييف">تكييف وتبريد</option>
+          </select>
+        </div>
+
+        <!-- الخبرة -->
+        <div>
+          <label for="experience" class="block text-sm font-medium text-gray-700 mb-1">سنوات الخبرة *</label>
+          <select id="experience" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">اختر عدد السنوات</option>
+            <option value="1-3">1-3 سنوات</option>
+            <option value="3-5">3-5 سنوات</option>
+            <option value="5+">أكثر من 5 سنوات</option>
+          </select>
+        </div>
+
+        <!-- رقم الهاتف -->
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">رقم الهاتف *</label>
+          <div class="flex">
+            <select id="phoneCode" class="w-20 p-3 border border-gray-300 rounded-l-lg focus:ring-blue-500 focus:border-blue-500">
+              <option value="+213">+213</option>
+              <option value="+216">+216</option>
+              <option value="+212">+212</option>
+            </select>
+            <input type="tel" id="phone" required pattern="[0-9]{9}" 
+                   class="flex-1 p-3 border-t border-b border-r border-gray-300 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="مثال: 0551234567">
+          </div>
+        </div>
+      </div>
+
+      <!-- العمود الثاني -->
+      <div class="space-y-6">
+        <!-- الولاية والدائرة -->
+        <div>
+          <label for="wilaya" class="block text-sm font-medium text-gray-700 mb-1">الولاية *</label>
+          <select id="wilaya" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">اختر ولايتك</option>
+            <!-- سيتم تعبئتها بالجافاسكريبت -->
+          </select>
+        </div>
+
+        <div>
+          <label for="daira" class="block text-sm font-medium text-gray-700 mb-1">الدائرة *</label>
+          <select id="daira" required disabled class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">اختر أولا الولاية</option>
+          </select>
+        </div>
+
+        <!-- وصف الخدمات -->
+        <div>
+          <label for="services" class="block text-sm font-medium text-gray-700 mb-1">الخدمات المقدمة *</label>
+          <textarea id="services" rows="3" required 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="صف الخدمات التي تقدمها بالتفصيل"></textarea>
+        </div>
+
+        <!-- معرض الأعمال -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">معرض أعمالك (اختياري)</label>
+          <div class="upload-area p-4 rounded-lg text-center cursor-pointer" id="portfolioUpload">
+            <input type="file" id="portfolioImages" accept="image/*" multiple class="hidden">
+            <i class="fas fa-images text-2xl text-blue-500 mb-2"></i>
+            <p class="text-sm text-gray-600">اسحب وأسقط الصور هنا أو <span class="text-blue-500">اضغط للاختيار</span></p>
+            <p class="text-xs text-gray-500 mt-1">يمكنك رفع حتى 10 صور (JPEG, PNG)</p>
+          </div>
+          <div id="portfolioPreview" class="grid grid-cols-3 gap-2 mt-2 hidden"></div>
+        </div>
+      </div>
+
+      <!-- زر الإرسال -->
+      <div class="md:col-span-2 pt-4">
+        <button type="submit" id="submitBtn" 
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition flex items-center justify-center">
+          <span id="submitText">إكمال التسجيل</span>
+          <i id="submitSpinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module">
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+    import { app } from './firebase-config.js';
+    import { wilayas } from './wilayas.js';
+
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const storage = getStorage(app);
+
+    // عناصر DOM
+    const profileImageInput = document.getElementById('profileImage');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const previewImage = document.getElementById('previewImage');
+    const portfolioImagesInput = document.getElementById('portfolioImages');
+    const portfolioPreview = document.getElementById('portfolioPreview');
+    const wilayaSelect = document.getElementById('wilaya');
+    const dairaSelect = document.getElementById('daira');
+    const form = document.getElementById('completeProfileForm');
+
+    // تعبئة الولايات
+    for (const code in wilayas) {
+      const option = document.createElement('option');
+      option.value = code;
+      option.textContent = `${code} - ${wilayas[code].name}`;
+      wilayaSelect.appendChild(option);
+    }
+
+    // عند تغيير الولاية
+    wilayaSelect.addEventListener('change', () => {
+      dairaSelect.innerHTML = '<option value="">اختر الدائرة</option>';
+      const selectedWilaya = wilayaSelect.value;
+      
+      if (selectedWilaya && wilayas[selectedWilaya]) {
+        dairaSelect.disabled = false;
+        wilayas[selectedWilaya].dairas.forEach(daira => {
+          const option = document.createElement('option');
+          option.value = daira;
+          option.textContent = daira;
+          dairaSelect.appendChild(option);
+        });
+      } else {
+        dairaSelect.disabled = true;
+      }
+    });
+
+    // معالجة رفع صورة البروفايل
+    profileImageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          previewImage.src = event.target.result;
+          previewImage.style.display = 'block';
+          uploadPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // معالجة رفع معرض الأعمال
+    portfolioImagesInput.addEventListener('change', (e) => {
+      portfolioPreview.innerHTML = '';
+      const files = Array.from(e.target.files).slice(0, 10);
+      
+      if (files.length > 0) {
+        portfolioPreview.classList.remove('hidden');
+        
+        files.forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'relative group';
+            
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.className = 'w-full h-24 object-cover rounded border';
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+            deleteBtn.className = 'absolute top-1 left-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition';
+            deleteBtn.onclick = () => removePortfolioImage(index);
+            
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(deleteBtn);
+            portfolioPreview.appendChild(imgContainer);
+          };
+          reader.readAsDataURL(file);
+        });
+      } else {
+        portfolioPreview.classList.add('hidden');
+      }
+    });
+
+    function removePortfolioImage(index) {
+      const files = Array.from(portfolioImagesInput.files);
+      files.splice(index, 1);
+      
+      // إنشاء DataTransfer جديد وتعيين الملفات المتبقية
+      const newFiles = new DataTransfer();
+      files.forEach(file => newFiles.items.add(file));
+      portfolioImagesInput.files = newFiles.files;
+      
+      // إعادة عرض المعرض
+      portfolioImagesInput.dispatchEvent(new Event('change'));
+    }
+
+    // إرسال النموذج
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const submitText = document.getElementById('submitText');
+      const submitSpinner = document.getElementById('submitSpinner');
+      
+      submitBtn.disabled = true;
+      submitText.textContent = 'جاري الحفظ...';
+      submitSpinner.classList.remove('hidden');
+      
+      try {
+        const user = auth.currentUser;
+        if (!user) throw new Error('يجب تسجيل الدخول أولاً');
+        
+        const formData = {
+          specialty: document.getElementById('specialty').value,
+          experience: document.getElementById('experience').value,
+          phone: document.getElementById('phoneCode').value + document.getElementById('phone').value,
+          wilaya: wilayaSelect.options[wilayaSelect.selectedIndex].text,
+          daira: dairaSelect.value,
+          services: document.getElementById('services').value,
+          profileCompleted: true,
+          completedAt: Date.now()
+        };
+        
+        // رفع صورة البروفايل إذا تم اختيارها
+        if (profileImageInput.files[0]) {
+          const profileRef = storageRef(storage, `profiles/${user.uid}/avatar.jpg`);
+          await uploadBytes(profileRef, profileImageInput.files[0]);
+          formData.photoURL = await getDownloadURL(profileRef);
+        }
+        
+        // رفع معرض الأعمال إذا تم اختياره
+        if (portfolioImagesInput.files.length > 0) {
+          const portfolioUrls = [];
+          for (let i = 0; i < portfolioImagesInput.files.length; i++) {
+            const file = portfolioImagesInput.files[i];
+            const portfolioRef = storageRef(storage, `profiles/${user.uid}/portfolio/${Date.now()}_${file.name}`);
+            await uploadBytes(portfolioRef, file);
+            portfolioUrls.push(await getDownloadURL(portfolioRef));
+          }
+          formData.portfolio = portfolioUrls;
+        }
+        
+        // تحديث البيانات في قاعدة البيانات
+        await update(ref(db, `artisans/${user.uid}`), formData);
+        
+        alert('تم حفظ بياناتك بنجاح! سيتم توجيهك إلى لوحة التحكم.');
+        window.location.href = 'artisan-dashboard.html';
+        
+      } catch (error) {
+        console.error('Error completing profile:', error);
+        alert(`حدث خطأ أثناء حفظ البيانات: ${error.message}`);
+      } finally {
+        submitBtn.disabled = false;
+        submitText.textContent = 'إكمال التسجيل';
+        submitSpinner.classList.add('hidden');
+      }
+    });
+
+    // Drag and drop للمعرض
+    const portfolioUpload = document.getElementById('portfolioUpload');
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      portfolioUpload.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      portfolioUpload.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      portfolioUpload.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+      portfolioUpload.classList.add('border-blue-500', 'bg-blue-50');
+    }
+    
+    function unhighlight() {
+      portfolioUpload.classList.remove('border-blue-500', 'bg-blue-50');
+    }
+    
+    portfolioUpload.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      portfolioImagesInput.files = files;
+      portfolioImagesInput.dispatchEvent(new Event('change'));
+    }
+  </script>
+</body>
+</html>
+
+
+
+
