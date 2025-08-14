@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tableau de bord - Artisan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiMiPjgTY0E5Lrs2ZQOqR4WVWv76ETbRo",
+      authDomain: "hirafiyin.firebaseapp.com",
+      databaseURL: "https://hirafiyin-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "hirafiyin",
+      storageBucket: "hirafiyin.appspot.com",
+      messagingSenderId: "484744901673",
+      appId: "1:484744901673:web:8abd205006111bdfaf9838"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    // تحميل بيانات الحرفي
+    function loadArtisanData(userId) {
+      const artisanRef = ref(db, 'artisans/' + userId);
+      
+      onValue(artisanRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          // عرض البيانات في الصفحة
+          document.getElementById('artisanName').textContent = data.nom || 'Non spécifié';
+          document.getElementById('artisanSpecialite').textContent = data.specialite || 'Non spécifié';
+          document.getElementById('artisanExperience').textContent = data.experience ? `${data.experience} ans` : 'Non spécifié';
+          document.getElementById('artisanPrix').textContent = data.prix ? `${data.prix} DZD / ${data.unite === 'heure' ? 'heure' : 'mètre'}` : 'Non spécifié';
+          document.getElementById('artisanBio').textContent = data.bio || 'Aucune description fournie';
+          document.getElementById('artisanLocation').textContent = `${data.wilaya || ''}, ${data.daira || ''}, ${data.codePostal || ''}`;
+          document.getElementById('artisanAddress').textContent = data.adresse || 'Non spécifié';
+          document.getElementById('artisanPhone').textContent = data.telephone || 'Non spécifié';
+          
+          // عرض صورة الحرفي إذا كانت موجودة
+          if (data.photo) {
+            document.getElementById('artisanImage').src = data.photo;
+            document.getElementById('artisanImage').classList.remove('hidden');
+          }
+        }
+      });
+    }
+
+    // تسجيل الخروج
+    window.logout = () => {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      }).catch((error) => {
+        console.error("Erreur de déconnexion:", error);
+      });
+    };
+
+    // التحقق من حالة المصادقة عند تحميل الصفحة
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loadArtisanData(user.uid);
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <header class="bg-blue-600 text-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Tableau de bord Artisan</h1>
+      <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition">
+        Déconnexion
+      </button>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <!-- Section معلومات الحرفي -->
+      <div class="p-6 md:p-8">
+        <div class="flex flex-col md:flex-row gap-6">
+          <!-- صورة الحرفي -->
+          <div class="flex-shrink-0">
+            <div class="w-40 h-40 rounded-full border-4 border-blue-400 overflow-hidden bg-gray-100">
+              <img id="artisanImage" class="w-full h-full object-cover hidden" alt="Photo de l'artisan"/>
+              <div id="noImage" class="w-full h-full flex items-center justify-center text-gray-500">
+                <span>Pas de photo</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- المعلومات الأساسية -->
+          <div class="flex-grow">
+            <h2 id="artisanName" class="text-2xl font-bold text-gray-800 mb-2">Chargement...</h2>
+            <p id="artisanSpecialite" class="text-blue-600 font-semibold mb-1">Chargement...</p>
+            <p id="artisanExperience" class="text-gray-600 mb-1">Chargement...</p>
+            <p id="artisanPrix" class="text-gray-600 mb-4">Chargement...</p>
+            <p id="artisanBio" class="text-gray-700">Chargement...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- تفاصيل الاتصال -->
+      <div class="bg-gray-50 p-6 md:p-8 border-t">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Informations de contact</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-medium text-gray-700">Localisation</h4>
+            <p id="artisanLocation" class="text-gray-600">Chargement...</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-700">Adresse détaillée</h4>
+            <p id="artisanAddress" class="text-gray-600">Chargement...</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-700">Téléphone</h4>
+            <p id="artisanPhone" class="text-gray-600">Chargement...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- قسم الطلبات -->
+    <div class="mt-8 bg-white rounded-xl shadow-lg overflow-hidden">
+      <div class="p-6 border-b">
+        <h3 class="text-xl font-semibold text-gray-800">Vos demandes récentes</h3>
+      </div>
+      <div class="p-6">
+        <div class="text-center py-8 text-gray-500">
+          <p>Aucune demande pour le moment</p>
+        </div>
+        <!-- يمكن إضافة قائمة الطلبات هنا عند توفرها -->
+      </div>
+    </div>
+
+    <!-- قسم الإحصائيات -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+        <h4 class="text-gray-500 font-medium">Demandes totales</h4>
+        <p class="text-3xl font-bold text-blue-600 mt-2">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+        <h4 class="text-gray-500 font-medium">Demandes acceptées</h4>
+        <p class="text-3xl font-bold text-green-600 mt-2">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+        <h4 class="text-gray-500 font-medium">Note moyenne</h4>
+        <p class="text-3xl font-bold text-yellow-600 mt-2">-</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-6 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p>© 2023 Hirafiyin - Tous droits réservés</p>
+    </div>
+  </footer>
+</body>
+</html>
+

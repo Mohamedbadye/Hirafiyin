@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>البحث عن الحرفيين</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="wilayas.js" defer></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <div class="max-w-4xl mx-auto p-4">
+    <h2 class="text-2xl font-bold text-center my-6">ابحث عن حرفيين</h2>
+
+    <!-- نموذج الفلترة -->
+    <form id="filterForm" class="bg-white p-6 rounded-lg shadow-md space-y-4">
+      <div>
+        <label for="wilayaSelect" class="block text-lg font-semibold">الولاية:</label>
+        <select id="wilayaSelect" class="w-full p-2 border border-gray-300 rounded-lg" required>
+          <option value="">اختر الولاية</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="daieraSelect" class="block text-lg font-semibold">الدائرة:</label>
+        <select id="daieraSelect" class="w-full p-2 border border-gray-300 rounded-lg" required>
+          <option value="">اختر الدائرة</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="specialtySelect" class="block text-lg font-semibold">التخصص:</label>
+        <select id="specialtySelect" class="w-full p-2 border border-gray-300 rounded-lg">
+          <option value="">كل التخصصات</option>
+        </select>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700">ابحث</button>
+      </div>
+    </form>
+
+    <h3 class="text-xl font-semibold my-6 text-center">الحرفيين المتاحين:</h3>
+    <div id="artisanList" class="space-y-4">
+      <!-- نتائج البحث ستظهر هنا -->
+    </div>
+  </div>
+
+  <script type="module">
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const wilayaSelect = document.getElementById("wilayaSelect");
+      const daieraSelect = document.getElementById("daieraSelect");
+      const specialtySelect = document.getElementById("specialtySelect");
+      const artisanList = document.getElementById("artisanList");
+
+      // تعبئة قائمة الولايات
+      for (const code in wilayas) {
+        const option = document.createElement("option");
+        option.value = code;
+        option.textContent = wilayas[code].name;
+        wilayaSelect.appendChild(option);
+      }
+
+      // تحديث الدوائر حسب الولاية
+      wilayaSelect.addEventListener("change", () => {
+        const selected = wilayaSelect.value;
+        daieraSelect.innerHTML = "<option value=''>اختر الدائرة</option>";
+
+        if (selected && wilayas[selected]) {
+          wilayas[selected].daieres.forEach(daiera => {
+            const option = document.createElement("option");
+            option.value = daiera;
+            option.textContent = daiera;
+            daieraSelect.appendChild(option);
+          });
+        }
+      });
+
+      // تحميل التخصصات من قاعدة البيانات Firebase
+      const db = getDatabase();
+      const artisansRef = ref(db, 'artisans');
+
+      try {
+        const snapshot = await get(artisansRef);
+        if (snapshot.exists()) {
+          const artisans = Object.values(snapshot.val());
+
+          // استخراج التخصصات الفريدة
+          const specialties = [...new Set(artisans.map(a => a.specialty).filter(Boolean))];
+
+          specialties.forEach(specialty => {
+            const option = document.createElement("option");
+            option.value = specialty;
+            option.textContent = specialty;
+            specialtySelect.appendChild(option);
+          });
+        }
+      } catch (err) {
+        console.error("خطأ أثناء تحميل التخصصات:", err);
+      }
+
+      // فلترة الحرفيين
+      document.getElementById("filterForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const wilaya = wilayaSelect.value;
+        const daiera = daieraSelect.value;
+        const specialty = specialtySelect.value;
+        artisanList.innerHTML = '';
+
+        try {
+          const snapshot = await get(artisansRef);
+          if (snapshot.exists()) {
+            const allArtisans = Object.values(snapshot.val());
+            const filtered = allArtisans.filter(a =>
+              (wilaya === '' || a.wilaya === wilaya) &&
+              (daiera === '' || a.daiera === daiera) &&
+              (specialty === '' || a.specialty === specialty)
+            );
+
+            if (filtered.length > 0) {
+              filtered.forEach(artisan => {
+                const div = document.createElement("div");
+                div.className = "bg-white p-4 rounded-lg shadow-md";
+                div.innerHTML = `<p class="font-semibold">${artisan.name}</p>
+                                 <p>${artisan.specialty} - ${artisan.wilaya} - ${artisan.daiera}</p>`;
+                artisanList.appendChild(div);
+              });
+            } else {
+              artisanList.innerHTML = '<p class="text-center text-gray-500">لا توجد نتائج</p>';
+            }
+          }
+        } catch (err) {
+          artisanList.innerHTML = '<p class="text-center text-red-500">حدث خطأ أثناء تحميل البيانات</p>';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

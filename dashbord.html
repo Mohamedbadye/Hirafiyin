@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ArtisanPro - Espace Client</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+    }
+    
+    body {
+      padding-top: 56px;
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      background-color: var(--secondary-color);
+      color: white;
+      padding-top: 1rem;
+      z-index: 1000;
+    }
+
+    .sidebar .nav-link {
+      color: rgba(255,255,255,0.8);
+      transition: all 0.2s;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+    }
+
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background-color: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .sidebar .nav-link i {
+      width: 24px;
+      text-align: center;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    @media (max-width: 991.98px) {
+      .sidebar {
+        display: none;
+      }
+      .content {
+        margin-left: 0;
+      }
+    }
+
+    .card {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: none;
+      transition: transform 0.3s;
+      border-radius: 10px;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .card-title {
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+
+    h1, h2, h3 {
+      color: var(--secondary-color);
+      font-weight: 700;
+    }
+
+    .welcome-section {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .stats-card {
+      border-left: 4px solid;
+    }
+
+    .stats-card.primary {
+      border-left-color: var(--primary-color);
+    }
+
+    .stats-card.success {
+      border-left-color: #2ecc71;
+    }
+
+    .stats-card.warning {
+      border-left-color: #f39c12;
+    }
+
+    .stats-card.danger {
+      border-left-color: var(--accent-color);
+    }
+
+    .logout-btn {
+      color: var(--accent-color);
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: rgba(231, 76, 60, 0.1);
+    }
+
+    .notification-badge {
+      font-size: 0.6rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .badge-primary {
+      background-color: var(--primary-color);
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .service-card {
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .artisan-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .rating-stars {
+      color: #f1c40f;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container-fluid">
+    <!-- Bouton sidebar mobile -->
+    <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Logo -->
+    <a class="navbar-brand me-2 fw-bold" href="#">
+      <i class="bi bi-house-heart me-1"></i> ArtisanPro
+    </a>
+
+    <!-- Profil et notifications -->
+    <div class="d-flex align-items-center ms-auto">
+      <!-- Notification -->
+      <a href="#" class="me-3 position-relative text-dark">
+        <i class="bi bi-bell fs-5"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge">
+          2
+        </span>
+      </a>
+
+      <!-- Photo et nom -->
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-decoration-none text-dark dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" class="user-avatar me-2">
+          <span class="fw-semibold">Sophie Martin</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+          <li><a class="dropdown-item" href="profilclient.html"><i class="bi bi-person me-2"></i>Mon profil</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-heart me-2"></i>Favoris</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Paramètres</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar (Desktop) -->
+<div class="sidebar d-none d-lg-flex flex-column justify-content-between">
+  <ul class="nav flex-column px-3">
+    <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-house-door me-1"></i> Accueil</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-search me-1"></i> Trouver un artisan</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-file-text me-1"></i> Mes demandes</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-calendar-check me-1"></i> Rendez-vous</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-chat-left-text me-1"></i> Messages</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-star me-1"></i> Avis à donner</a></li>
+    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-credit-card me-1"></i> Paiements</a></li>
+  </ul>
+  
+  <!-- Section aide -->
+  <div class="px-3 py-2">
+    <h6 class="text-white-50 mb-2">BESOIN D'AIDE ?</h6>
+    <div>
+      <a href="#" class="d-block text-white mb-2"><i class="bi bi-question-circle me-1"></i> Centre d'aide</a>
+      <a href="#" class="d-block text-white"><i class="bi bi-telephone me-1"></i> Nous contacter</a>
+    </div>
+  </div>
+
+  <!-- Déconnexion -->
+  <div class="px-3 py-3 logout-btn cursor-pointer mt-4">
+    <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+  </div>
+</div>
+
+<!-- Offcanvas Sidebar (Mobile) -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar">
+  <div class="offcanvas-header bg-dark text-white">
+    <h5 class="offcanvas-title">Menu Client</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body bg-dark">
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link active text-white" href="#"><i class="bi bi-house-door me-1"></i> Accueil</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-search me-1"></i> Trouver un artisan</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-file-text me-1"></i> Mes demandes</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-calendar-check me-1"></i> Rendez-vous</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-chat-left-text me-1"></i> Messages</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-star me-1"></i> Avis à donner</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-credit-card me-1"></i> Paiements</a></li>
+    </ul>
+    
+    <div class="mt-4">
+      <h6 class="text-white-50 mb-2">BESOIN D'AIDE ?</h6>
+      <div>
+        <a href="#" class="d-block text-white mb-2"><i class="bi bi-question-circle me-1"></i> Centre d'aide</a>
+        <a href="#" class="d-block text-white"><i class="bi bi-telephone me-1"></i> Nous contacter</a>
+      </div>
+    </div>
+  </div>
+  <div class="px-3 pb-3 bg-dark">
+    <a class="nav-link text-danger fw-bold" href="#"><i class="bi bi-box-arrow-right me-1"></i> Déconnexion</a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1>Bonjour Sophie !</h1>
+        <p class="lead">Trouvez l'artisan parfait pour vos projets et gérez facilement toutes vos demandes.</p>
+        <a href="#" class="btn btn-light me-2">Nouvelle demande</a>
+        <a href="#" class="btn btn-outline-light">Voir mes projets</a>
+      </div>
+      <div class="col-md-4 text-center">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="user-avatar" style="width: 80px; height: 80px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Services populaires -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h3 class="mb-3">Services fréquemment demandés</h3>
+      <div class="row g-3">
+        <div class="col-md-3 col-6">
+          <div class="card service-card h-100">
+            <div class="card-body text-center">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                <i class="bi bi-tools text-primary fs-4"></i>
+              </div>
+              <h5 class="card-title">Plomberie</h5>
+              <p class="card-text small text-muted">Fuite, installation, dépannage</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Choisir</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card service-card h-100">
+            <div class="card-body text-center">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                <i class="bi bi-lightning-charge text-primary fs-4"></i>
+              </div>
+              <h5 class="card-title">Électricité</h5>
+              <p class="card-text small text-muted">Installation, rénovation, dépannage</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Choisir</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card service-card h-100">
+            <div class="card-body text-center">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                <i class="bi bi-house-door text-primary fs-4"></i>
+              </div>
+              <h5 class="card-title">Menuiserie</h5>
+              <p class="card-text small text-muted">Meuble, parquet, agencement</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Choisir</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="card service-card h-100">
+            <div class="card-body text-center">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                <i class="bi bi-paint-bucket text-primary fs-4"></i>
+              </div>
+              <h5 class="card-title">Peinture</h5>
+              <p class="card-text small text-muted">Intérieur, extérieur, décoration</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Choisir</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100 stats-card primary">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-2">Demandes en cours</h6>
+              <h3 class="mb-0">3</h3>
+            </div>
+            <div class="bg-primary bg-opacity-10 p-3 rounded">
+              <i class="bi bi-file-earmark-text text-primary fs-4"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span class="badge bg-primary">1 nouvelle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100 stats-card success">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-2">Projets actifs</h6>
+              <h3 class="mb-0">2</h3>
+            </div>
+            <div class="bg-success bg-opacity-10 p-3 rounded">
+              <i class="bi bi-hammer text-success fs-4"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span class="badge bg-success">1 en cours</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100 stats-card warning">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-2">RDV programmés</h6>
+              <h3 class="mb-0">1</h3>
+            </div>
+            <div class="bg-warning bg-opacity-10 p-3 rounded">
+              <i class="bi bi-calendar-check text-warning fs-4"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span class="badge bg-warning text-dark">Aujourd'hui</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100 stats-card danger">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-muted mb-2">Avis à donner</h6>
+              <h3 class="mb-0">1</h3>
+            </div>
+            <div class="bg-danger bg-opacity-10 p-3 rounded">
+              <i class="bi bi-star text-danger fs-4"></i>
+            </div>
+          </div>
+          <div class="mt-3">
+            <span class="badge bg-danger">En attente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Artisans recommandés -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Artisans recommandés</h3>
+        <a href="#" class="btn btn-sm btn-outline-secondary">Voir plus</a>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="artisan-avatar mb-3">
+              <h5 class="card-title">Jean Dupont</h5>
+              <p class="text-muted small">Plombier • Paris</p>
+              <div class="rating-stars mb-2">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                <span class="text-muted ms-1">4.7 (28)</span>
+              </div>
+              <p class="card-text small">Spécialiste en rénovation sanitaire avec 10 ans d'expérience.</p>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="#" class="btn btn-sm btn-outline-primary">Voir profil</a>
+                <a href="#" class="btn btn-sm btn-primary">Contacter</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <img src="https://randomuser.me/api/portraits/women/45.jpg" class="artisan-avatar mb-3">
+              <h5 class="card-title">Marie Lambert</h5>
+              <p class="text-muted small">Électricienne • Lyon</p>
+              <div class="rating-stars mb-2">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <span class="text-muted ms-1">5.0 (42)</span>
+              </div>
+              <p class="card-text small">Certifiée et spécialisée dans les installations neuves.</p>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="#" class="btn btn-sm btn-outline-primary">Voir profil</a>
+                <a href="#" class="btn btn-sm btn-primary">Contacter</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <img src="https://randomuser.me/api/portraits/men/55.jpg" class="artisan-avatar mb-3">
+              <h5 class="card-title">Thomas Leroy</h5>
+              <p class="text-muted small">Menuisier • Marseille</p>
+              <div class="rating-stars mb-2">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+                <span class="text-muted ms-1">4.2 (35)</span>
+              </div>
+              <p class="card-text small">Création de meubles sur mesure et agencement intérieur.</p>
+              <div class="d-flex justify-content-center gap-2">
+                <a href="#" class="btn btn-sm btn-outline-primary">Voir profil</a>
+                <a href="#" class="btn btn-sm btn-primary">Contacter</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dernières demandes -->
+  <div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <h5 class="card-title mb-0">Mes dernières demandes</h5>
+      <a href="#" class="btn btn-sm btn-primary">Nouvelle demande</a>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Artisan</th>
+              <th>Statut</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Réparation fuite salle de bain</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" class="artisan-avatar me-2" style="width: 30px; height: 30px;">
+                  <span>Jean Dupont</span>
+                </div>
+              </td>
+              <td><span class="badge bg-success">En cours</span></td>
+              <td>24/05/2023</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-1">Détails</button>
+                <button class="btn btn-sm btn-outline-secondary">Message</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Installation luminaires</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img src="https://randomuser.me/api/portraits/women/45.jpg" class="artisan-avatar me-2" style="width: 30px; height: 30px;">
+                  <span>Marie Lambert</span>
+                </div>
+              </td>
+              <td><span class="badge bg-info">Devis reçu</span></td>
+              <td>22/05/2023</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-1">Détails</button>
+                <button class="btn btn-sm btn-outline-success">Accepter</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Création étagère sur mesure</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img src="https://randomuser.me/api/portraits/men/55.jpg" class="artisan-avatar me-2" style="width: 30px; height: 30px;">
+                  <span>Thomas Leroy</span>
+                </div>
+              </td>
+              <td><span class="badge bg-warning text-dark">En attente</span></td>
+              <td>20/05/2023</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-1">Détails</button>
+                <button class="btn btn-sm btn-outline-danger">Annuler</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-center mt-3">
+        <a href="#" class="btn btn-outline-secondary">Voir toutes mes demandes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

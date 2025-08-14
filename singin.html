@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب - حِرَافة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .password-strength {
+      height: 4px;
+      transition: all 0.3s;
+    }
+    .strength-weak { background-color: #ef4444; width: 25%; }
+    .strength-medium { background-color: #f59e0b; width: 50%; }
+    .strength-strong { background-color: #10b981; width: 75%; }
+    .strength-very-strong { background-color: #3b82f6; width: 100%; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div class="text-center mb-8">
+      <img src="logo.png" alt="شعار حِرَافة" class="h-16 mx-auto">
+      <h1 class="text-2xl font-bold mt-4 text-gray-800">إنشاء حساب جديد</h1>
+    </div>
+
+    <!-- خيارات التسجيل -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <button id="googleRegisterBtn" 
+              class="flex items-center justify-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+        <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5">
+        <span>جوجل</span>
+      </button>
+      <button class="flex items-center justify-center gap-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+        <i class="fab fa-facebook text-blue-600"></i>
+        <span>فيسبوك</span>
+      </button>
+    </div>
+
+    <div class="flex items-center my-6">
+      <div class="flex-1 border-t border-gray-300"></div>
+      <span class="px-4 text-gray-500">أو</span>
+      <div class="flex-1 border-t border-gray-300"></div>
+    </div>
+
+    <!-- نموذج التسجيل -->
+    <form id="registerForm" class="space-y-5">
+      <div>
+        <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل</label>
+        <input type="text" id="fullName" required
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+        <input type="email" id="email" required
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div>
+
+      <div class="relative">
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>
+        <div class="relative">
+          <input type="password" id="password" required minlength="8"
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10">
+          <i class="fas fa-eye-slash password-toggle" id="togglePassword"></i>
+        </div>
+        <div class="password-strength mt-1 rounded-full" id="passwordStrength"></div>
+        <ul class="text-xs text-gray-500 mt-2 list-disc list-inside">
+          <li id="lengthCheck">8 أحرف على الأقل</li>
+          <li id="uppercaseCheck">حرف كبير واحد على الأقل</li>
+          <li id="numberCheck">رقم واحد على الأقل</li>
+        </ul>
+      </div>
+
+      <div class="relative">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">تأكيد كلمة المرور</label>
+        <div class="relative">
+          <input type="password" id="confirmPassword" required
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10">
+          <i class="fas fa-eye-slash password-toggle" id="toggleConfirmPassword"></i>
+        </div>
+        <p id="passwordMatchError" class="text-xs text-red-500 mt-1 hidden">كلمة المرور غير متطابقة</p>
+      </div>
+
+      <div>
+        <label for="userType" class="block text-sm font-medium text-gray-700 mb-1">نوع الحساب</label>
+        <select id="userType" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">اختر نوع الحساب</option>
+          <option value="client">عميل (أبحث عن حرفي)</option>
+          <option value="artisan">حرفي (أقدم خدمات)</option>
+        </select>
+      </div>
+
+      <div class="flex items-start">
+        <input type="checkbox" id="termsAgreement" required
+               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1">
+        <label for="termsAgreement" class="mr-2 block text-sm text-gray-700">
+          أوافق على <a href="#" class="text-blue-600 hover:underline">الشروط والأحكام</a> و
+          <a href="#" class="text-blue-600 hover:underline">سياسة الخصوصية</a>
+        </label>
+      </div>
+
+      <button type="submit" 
+              class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition">
+        إنشاء حساب
+      </button>
+    </form>
+
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600">لديك حساب بالفعل؟ 
+        <a href="login.html" class="text-blue-600 font-medium hover:underline">سجل الدخول الآن</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { 
+      initializeApp, 
+      getAuth, 
+      createUserWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup,
+      sendEmailVerification
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    // التهيئة
+    const firebaseConfig = { /* ... إعدادات Firebase الخاصة بك ... */ };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const provider = new GoogleAuthProvider();
+
+    // التحقق من قوة كلمة المرور
+    document.getElementById('password').addEventListener('input', function() {
+      const password = this.value;
+      const strengthBar = document.getElementById('passwordStrength');
+      const lengthCheck = document.getElementById('lengthCheck');
+      const uppercaseCheck = document.getElementById('uppercaseCheck');
+      const numberCheck = document.getElementById('numberCheck');
+
+      // إعادة تعيين
+      strengthBar.className = 'password-strength mt-1 rounded-full';
+      lengthCheck.style.color = '';
+      uppercaseCheck.style.color = '';
+      numberCheck.style.color = '';
+
+      let strength = 0;
+
+      // التحقق من الطول
+      if (password.length >= 8) {
+        strength++;
+        lengthCheck.style.color = 'green';
+      }
+
+      // التحقق من الأحرف الكبيرة
+      if (/[A-Z]/.test(password)) {
+        strength++;
+        uppercaseCheck.style.color = 'green';
+      }
+
+      // التحقق من الأرقام
+      if (/\d/.test(password)) {
+        strength++;
+        numberCheck.style.color = 'green';
+      }
+
+      // تحديث شريط القوة
+      switch(strength) {
+        case 1: strengthBar.classList.add('strength-weak'); break;
+        case 2: strengthBar.classList.add('strength-medium'); break;
+        case 3: strengthBar.classList.add('strength-strong'); break;
+      }
+    });
+
+    // التحقق من تطابق كلمة المرور
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+      const password = document.getElementById('password').value;
+      const confirmPassword = this.value;
+      const errorElement = document.getElementById('passwordMatchError');
+
+      if (password && confirmPassword && password !== confirmPassword) {
+        errorElement.classList.remove('hidden');
+      } else {
+        errorElement.classList.add('hidden');
+      }
+    });
+
+    // إظهار/إخفاء كلمة المرور
+    function setupPasswordToggle(inputId, toggleId) {
+      document.getElementById(toggleId).addEventListener('click', function() {
+        const input = document.getElementById(inputId);
+        const icon = this;
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+      });
+    }
+    setupPasswordToggle('password', 'togglePassword');
+    setupPasswordToggle('confirmPassword', 'toggleConfirmPassword');
+
+    // تسجيل الدخول بـ Google
+    document.getElementById('googleRegisterBtn').addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // حفظ بيانات المستخدم
+        await set(ref(db, `users/${user.uid}`), {
+          name: user.displayName || '',
+          email: user.email,
+          photoURL: user.photoURL || '',
+          userType: '', // سيتم تعيينه في صفحة إكمال البروفايل
+          createdAt: Date.now()
+        });
+
+        // إرسال تحقق البريد الإلكتروني
+        await sendEmailVerification(user);
+        
+        // توجيه لإكمال البروفايل
+        window.location.href = 'complete-profile.html';
+        
+      } catch (error) {
+        console.error("Google Sign-In Error:", error);
+        alert(`فشل التسجيل: ${error.message}`);
+      }
+    });
+
+    // التسجيل التقليدي
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const fullName = document.getElementById('fullName').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const userType = document.getElementById('userType').value;
+
+      // التحقق من تطابق كلمة المرور
+      if (password !== confirmPassword) {
+        alert('كلمة المرور غير متطابقة');
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // حفظ بيانات المستخدم
+        await set(ref(db, `users/${user.uid}`), {
+          name: fullName,
+          email: email,
+          userType: userType,
+          createdAt: Date.now(),
+          profileCompleted: false
+        });
+
+        // إرسال تحقق البريد الإلكتروني
+        await sendEmailVerification(user);
+
+        alert('تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني.');
+        window.location.href = userType === 'artisan' ? 'complete-artisan-profile.html' : 'client-dashboard.html';
+        
+      } catch (error) {
+        let errorMessage = 'حدث خطأ أثناء إنشاء الحساب';
+        switch(error.code) {
+          case 'auth/email-already-in-use': errorMessage = 'البريد الإلكتروني مستخدم بالفعل'; break;
+          case 'auth/weak-password': errorMessage = 'كلمة المرور ضعيفة جدًا'; break;
+          case 'auth/invalid-email': errorMessage = 'بريد إلكتروني غير صالح'; break;
+        }
+        alert(errorMessage);
+      }
+    });
+  </script>
+</body>
+</html>
+

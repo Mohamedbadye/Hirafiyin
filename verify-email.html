@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirmation de l'e-mail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body dir="ltr" class="bg-gray-100 min-h-screen flex items-center justify-center relative">
+
+  <!-- زر تغيير اللغة -->
+  <div class="absolute top-4 left-4">
+    <select id="languageSelector" class="p-2 border rounded bg-white shadow">
+      <option value="fr">Français</option>
+      <option value="ar">العربية</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+
+  <div class="bg-white p-8 rounded-lg shadow-md text-center w-full max-w-md">
+    <h1 id="title" class="text-2xl font-bold text-green-600 mb-4">Inscription réussie !</h1>
+    <p id="message" class="text-gray-700 mb-6 leading-relaxed">
+      Un lien de vérification a été envoyé à votre adresse e-mail.<br>
+      Veuillez vérifier votre boîte de réception et activer votre compte pour continuer.
+    </p>
+    <a id="loginBtn" href="login.html" class="inline-block bg-cyan-600 text-white px-6 py-2 rounded hover:bg-cyan-700 transition">
+      Accéder à la connexion
+    </a>
+  </div>
+
+  <script>
+    const translations = {
+      ar: {
+        title: "تم التسجيل بنجاح!",
+        message: "لقد قمنا بإرسال رابط تفعيل إلى بريدك الإلكتروني.<br>الرجاء التحقق من بريدك وتفعيل الحساب للمتابعة.",
+        button: "الذهاب إلى تسجيل الدخول",
+        dir: "rtl",
+        lang: "ar"
+      },
+      fr: {
+        title: "Inscription réussie !",
+        message: "Un lien de vérification a été envoyé à votre adresse e-mail.<br>Veuillez vérifier votre boîte de réception et activer votre compte pour continuer.",
+        button: "Accéder à la connexion",
+        dir: "ltr",
+        lang: "fr"
+      },
+      en: {
+        title: "Registration Successful!",
+        message: "A verification link has been sent to your email.<br>Please check your inbox and activate your account to continue.",
+        button: "Go to Login",
+        dir: "ltr",
+        lang: "en"
+      }
+    };
+
+    const selector = document.getElementById("languageSelector");
+    const title = document.getElementById("title");
+    const message = document.getElementById("message");
+    const loginBtn = document.getElementById("loginBtn");
+
+    selector.addEventListener("change", () => {
+      const lang = selector.value;
+      const t = translations[lang];
+      title.textContent = t.title;
+      message.innerHTML = t.message;
+      loginBtn.textContent = t.button;
+      document.documentElement.lang = t.lang;
+      document.body.dir = t.dir;
+    });
+  </script>
+</body>
+</html>
+
+

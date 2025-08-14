@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Compléter le profil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
+    <h2 class="text-xl font-bold text-gray-700 mb-6">Souhaitez-vous compléter votre profil maintenant ?</h2>
+    <div class="flex flex-col items-start mb-3">
+      <a class="text-sm mb-3">Ajouter une photo de profil</a>
+      <a class="text-sm mb-3">Ajouter le coût</a>
+      <a class="text-sm mb-3">Ajouter un bio</a>
+    </div>
+
+    <div class="flex justify-center gap-4">
+      <button id="completeNowBtn" class="bg-cyan-600 text-white px-6 py-2 rounded hover:bg-cyan-700">
+        Oui, maintenant
+      </button>
+
+      <button id="skipBtn" class="bg-gray-300 text-gray-800 px-6 py-2 rounded hover:bg-gray-400">
+        Plus tard
+      </button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiMiPjgTY0E5Lrs2ZQOqR4WVWv76ETbRo",
+      authDomain: "hirafiyin.firebaseapp.com",
+      databaseURL: "https://hirafiyin-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "hirafiyin",
+      storageBucket: "hirafiyin.appspot.com",
+      messagingSenderId: "484744901673",
+      appId: "1:484744901673:web:8abd205006111bdfaf9838"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const dbRef = ref(db);
+
+    async function getUserType(uid) {
+      const visitorsSnap = await get(child(dbRef, "visitors"));
+      let type = null;
+      visitorsSnap.forEach(childSnap => {
+        if (childSnap.val().uid === uid) type = "visitor";
+      });
+
+      if (!type) {
+        const artisansSnap = await get(child(dbRef, "artisans"));
+        artisansSnap.forEach(childSnap => {
+          if (childSnap.val().uid === uid) type = "artisan";
+        });
+      }
+
+      return type;
+    }
+
+    document.getElementById("completeNowBtn").addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const userType = await getUserType(user.uid);
+      if (userType === "visitor") {
+        window.location.href = "completevisitor.html";
+      } else if (userType === "artisan") {
+        window.location.href = "completeartisan.html";
+      } else {
+        alert("❌ Type d'utilisateur non reconnu.");
+      }
+    });
+
+    document.getElementById("skipBtn").addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const userType = await getUserType(user.uid);
+      if (userType === "visitor") {
+        window.location.href = "completevisitor.html";
+      } else if (userType === "artisan") {
+        window.location.href = "completeartisan.html";
+      } else {
+        alert("❌ Type d'utilisateur non reconnu.");
+      }
+    });
+  </script>
+</body>
+</html>

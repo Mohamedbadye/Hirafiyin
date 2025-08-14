@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil Client | Hirafiyin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiMiPjgTY0E5Lrs2ZQOqR4WVWv76ETbRo",
+      authDomain: "hirafiyin.firebaseapp.com",
+      databaseURL: "https://hirafiyin-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "hirafiyin",
+      storageBucket: "hirafiyin.appspot.com",
+      messagingSenderId: "484744901673",
+      appId: "1:484744901673:web:8abd205006111bdfaf9838"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    // تحميل بيانات العميل
+    function loadClientData(userId) {
+      const clientRef = ref(db, 'clients/' + userId);
+      
+      onValue(clientRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          // عرض البيانات في الصفحة
+          document.getElementById('clientName').textContent = data.nom || 'Non spécifié';
+          document.getElementById('clientPhone').textContent = data.telephone || 'Non spécifié';
+          document.getElementById('clientPreferences').textContent = data.preferences || 'Aucune préférence spécifiée';
+          document.getElementById('clientWilaya').textContent = data.wilaya || 'Non spécifié';
+          document.getElementById('clientDaira').textContent = data.daira || 'Non spécifié';
+          document.getElementById('clientCodePostal').textContent = data.codePostal || 'Non spécifié';
+          document.getElementById('clientAddress').textContent = data.adresse || 'Non spécifié';
+          
+          // عرض صورة العميل إذا كانت موجودة
+          if (data.photo) {
+            document.getElementById('clientImage').src = data.photo;
+            document.getElementById('clientImage').classList.remove('hidden');
+            document.getElementById('noImage').classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    // التحقق من حالة المصادقة عند تحميل الصفحة
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loadClientData(user.uid);
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    // تعديل الملف الشخصي
+    window.editProfile = () => {
+      window.location.href = "edit-client-profile.html";
+    };
+  </script>
+  <style>
+    .profile-header {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+    .stat-card {
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="profile-header text-white shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex flex-col md:flex-row items-center">
+        <!-- صورة الملف الشخصي -->
+        <div class="relative mb-6 md:mb-0 md:mr-8">
+          <div class="w-32 h-32 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-xl">
+            <img id="clientImage" class="hidden w-full h-full object-cover" alt="Photo du client"/>
+            <div id="noImage" class="w-full h-full flex items-center justify-center text-gray-500">
+              <i class="fas fa-user text-4xl"></i>
+            </div>
+          </div>
+          <button onclick="editProfile()" class="absolute bottom-0 right-0 bg-white text-blue-600 p-2 rounded-full shadow-md hover:bg-gray-100">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+        </div>
+        
+        <!-- المعلومات الأساسية -->
+        <div class="text-center md:text-left">
+          <h1 id="clientName" class="text-3xl font-bold mb-2">Chargement...</h1>
+          <div class="flex flex-wrap justify-center md:justify-start gap-4 mb-4">
+            <div class="flex items-center">
+              <i class="fas fa-phone-alt mr-2"></i>
+              <span id="clientPhone">Chargement...</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <span id="clientWilaya">Chargement...</span>
+            </div>
+          </div>
+          <p id="clientPreferences" class="text-blue-100 max-w-2xl">Chargement...</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- العمود الأيسر - المعلومات الشخصية -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h2 class="text-xl font-semibold text-gray-800">
+              <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+              Informations personnelles
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 mb-1">Wilaya</h3>
+                <p id="clientWilaya" class="text-gray-800 font-medium">Chargement...</p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 mb-1">Daira</h3>
+                <p id="clientDaira" class="text-gray-800 font-medium">Chargement...</p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 mb-1">Code Postal</h3>
+                <p id="clientCodePostal" class="text-gray-800 font-medium">Chargement...</p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 mb-1">Adresse complète</h3>
+                <p id="clientAddress" class="text-gray-800 font-medium">Chargement...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- قسم الطلبات الحديثة -->
+        <div class="mt-8 bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h2 class="text-xl font-semibold text-gray-800">
+              <i class="fas fa-history text-blue-500 mr-2"></i>
+              Historique des demandes
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Artisan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                      Aucune demande récente
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-4 text-center">
+              <a href="client-requests.html" class="text-blue-600 hover:text-blue-800 font-medium">
+                Voir tout l'historique <i class="fas fa-arrow-right ml-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- العمود الأيمن - الإحصائيات والإجراءات -->
+      <div>
+        <!-- بطاقات الإحصائيات -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h2 class="text-xl font-semibold text-gray-800">
+              <i class="fas fa-chart-bar text-blue-500 mr-2"></i>
+              Statistiques
+            </h2>
+          </div>
+          <div class="p-6 grid grid-cols-1 gap-4">
+            <div class="stat-card bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <div class="flex items-center">
+                <div class="p-3 bg-blue-100 rounded-full mr-4">
+                  <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Demandes totales</p>
+                  <p class="text-2xl font-bold text-gray-800">0</p>
+                </div>
+              </div>
+            </div>
+            <div class="stat-card bg-green-50 p-4 rounded-lg border border-green-100">
+              <div class="flex items-center">
+                <div class="p-3 bg-green-100 rounded-full mr-4">
+                  <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Demandes acceptées</p>
+                  <p class="text-2xl font-bold text-gray-800">0</p>
+                </div>
+              </div>
+            </div>
+            <div class="stat-card bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+              <div class="flex items-center">
+                <div class="p-3 bg-yellow-100 rounded-full mr-4">
+                  <i class="fas fa-star text-yellow-600 text-xl"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Note moyenne</p>
+                  <p class="text-2xl font-bold text-gray-800">-</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- الإجراءات السريعة -->
+        <div class="mt-8 bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h2 class="text-xl font-semibold text-gray-800">
+              <i class="fas fa-bolt text-blue-500 mr-2"></i>
+              Actions rapides
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="space-y-3">
+              <a href="new-request.html" class="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+                <div class="p-2 bg-blue-100 rounded-full mr-3">
+                  <i class="fas fa-plus text-blue-600"></i>
+                </div>
+                <span class="font-medium">Nouvelle demande</span>
+              </a>
+              <a href="search-artisans.html" class="flex items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition">
+                <div class="p-2 bg-green-100 rounded-full mr-3">
+                  <i class="fas fa-search text-green-600"></i>
+                </div>
+                <span class="font-medium">Rechercher un artisan</span>
+              </a>
+              <a href="favorites.html" class="flex items-center p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition">
+                <div class="p-2 bg-purple-100 rounded-full mr-3">
+                  <i class="fas fa-heart text-purple-600"></i>
+                </div>
+                <span class="font-medium">Mes artisans favoris</span>
+              </a>
+              <a href="settings.html" class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition">
+                <div class="p-2 bg-gray-100 rounded-full mr-3">
+                  <i class="fas fa-cog text-gray-600"></i>
+                </div>
+                <span class="font-medium">Paramètres du compte</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- معلومات الاتصال -->
+        <div class="mt-8 bg-white rounded-xl shadow-md overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b">
+            <h2 class="text-xl font-semibold text-gray-800">
+              <i class="fas fa-headset text-blue-500 mr-2"></i>
+              Support client
+            </h2>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4">Besoin d'aide ? Notre équipe est disponible pour vous aider.</p>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <i class="fas fa-phone-alt text-gray-500 mr-3 w-5"></i>
+                <span>+213 123 456 789</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-500 mr-3 w-5"></i>
+                <span>support@hirafiyin.dz</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-clock text-gray-500 mr-3 w-5"></i>
+                <span>Lun-Ven: 8h-17h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <h3 class="text-xl font-bold flex items-center">
+            <i class="fas fa-hammer mr-2"></i> Hirafiyin
+          </h3>
+          <p class="text-gray-400 mt-1">La plateforme de référence pour les artisans en Algérie.</p>
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+      <hr class="border-gray-700 my-6">
+      <div class="text-center text-gray-400 text-sm">
+        <p>© 2023 Hirafiyin. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

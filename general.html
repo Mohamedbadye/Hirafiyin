@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hirafiyin - Plateforme pour Artisans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* تخصيصات CSS */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+    
+    .video-bg-black {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* خلفية سوداء */
+    z-index: -2; /* أسفل الفيديوهات (التي يجب أن تكون بـ z-index: -1) */
+}
+        
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            transition: transform 1s ease-in-out, opacity 0.5s ease-in-out;
+    }
+
+    /* إخفاء الفيديو */
+    .d-none {
+        display: none;
+    }
+
+    /* تأثير الانزلاق إلى اليسار */
+    .slide-out-left {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    /* تأثير الدخول من اليمين */
+    .slide-in-right {
+        transform: translateX(100%);
+    }
+
+    /* الفيديو النشط */
+    .active-video {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+        
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 0 20px;
+        }
+        
+        .btn-custom {
+            padding: 12px 30px;
+            font-weight: bold;
+            border-radius: 30px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary-custom {
+            background-color: #0d6efd;
+            border: 2px solid #0d6efd;
+        }
+        
+        .btn-outline-custom {
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline-custom:hover {
+            background-color: white;
+            color: #0d6efd;
+        }
+        
+        .features-section {
+            padding: 80px 0;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #0d6efd;
+        }
+        
+        .testimonials-section {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .testimonial-card {
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: #0d6efd;
+        }
+        
+        /* Animation for video fade */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hammer me-2"></i>Hirafiyin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Fonctionnalités</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#artisans">Artisans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Témoignages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="login.html" class="btn btn-outline-light">Connexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Video Background -->
+    <section class="hero-section">
+        <div class="video-bg-black"></div>
+        
+        <!-- Video Slideshow -->
+        <video autoplay muted loop id="video1" class="video-background fade-in">
+            <source src="vid2.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video2" class="video-background d-none">
+            <source src="vid3.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video3" class="video-background d-none">
+            <source src="vid1.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video3" class="video-background d-none">
+            <source src="vid1.mp4" type="video/mp4">
+        </video>
+        <video autoplay muted loop id="video3" class="video-background d-none">
+            <source src="backgroundh.mp4" type="video/mp4">
+        </video>
+        
+        <div class="hero-content">
+            <div class="container text-center">
+                <h1 class="display-3 fw-bold mb-4">Trouvez le meilleur artisan pour votre projet</h1>
+                <p class="lead mb-5">Plateforme de mise en relation entre clients et artisans qualifiés</p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center">
+                    <a href="singin.html" class="btn btn-primary btn-custom btn-primary-custom">
+                        <i class="fas fa-user-plus me-2"></i>S'inscrire
+                    </a>
+                    <a href="login.html" class="btn btn-outline-light btn-custom btn-outline-custom">
+                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    
+      <!-- Artisans Section -->
+    <section id="artisans" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Nos Artisans</h2>
+                <p class="lead text-muted">Découvrez nos professionnels qualifiés</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALoBDQMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAEAgMFBgcBAAj/xABREAACAQMCAgYFCAUKAwYGAwABAgMABBEFEiExBhMiQVFhMlJxgZEHFCNCcqGx0RUzksHwJDRDU2KCk6Lh8VRVwhZjg5Sy0kRFc3Sz0xc1Nv/EABoBAAIDAQEAAAAAAAAAAAAAAAECAAMEBQb/xAAtEQACAgEEAQIEBgMBAAAAAAAAAQIRAwQSITFBE1EFIjJhFEJxgaHBM5GxI//aAAwDAQACEQMRAD8A1c6tpv8Axlr/AIi/nXRq+m/8Za/4i/nTH/ZDo7/ym3+B/Oujoj0f/wCV2/wP50aJY+NWsP8AjIP8Rfzrv6UsP+Kg/wARfzqM1DReiWkwCfUILKzidur3yvtDEgnbknngH4VGzwfJxNN1076M7+s04/OjQLLKdYsE9O8tV/8AEWmz0g0tP/mNn/jL+dQ8cvQSadIo7nSnllkCoqzjLO2FAHHmeAFTJ6M6K6bH02Db4ce730KJYka/pf8AzG1/xF/Oio9Qt5kR0lV0b0WXiGHjmhl6L6Eno6Ta/sZ+40dZW0UNukSRoiRsVVVXAUZOBj2YqEsR89i9b/Ka5+kLf1n/AGTRXUxeqte6mL1Vo8EsFOowet/lP5V79JQet/lP5UV1EXqLXOoj9VanBLBf0na+t/lP5V79LWv9b/lP5USbWD+rWkSQWyIzOqqqrks2MADvqcEsHOsWf9b+P5Un9N2H9etU3VvlJ6NW25bK2l1ErntxxhI+H9puJHmARVL1L5SNRuXdbKCxtlb0dkG9197ZBPuHsq6Onk/AjyI2M6/pv/GRftV4dIdL/wCPg/arBU6QasjdbNfzM/ixXC+7GKsmm9OY4ezrGjWlx6slugjf3g5U+7FPLSyXQPVNYXXLB/8A4yL9oUTHqNm/oXUX7QqvdGrrQOkNmZ7C2UOm1ZYJIwGQnlkDgR5gkcD4VOjR7H+oT9ms7jTpjp2ErcxP9ZWpQmi9daTDawQptRFWnurT1aXgIjrU9Za91i+sn7VL6tPVrnVJ6tQInrE9df2hXusT11/aFd6iL1a4beL1ahD3Wp6y/tCuCZfWWvG1i9Wkmzi9WoQWJF9Za8JF9amjYQeFJOm2/hUIEb67mo2awi66KLdJ2s7trEHke8UQunRLH1QabZ/9Zs/tZzUIFZr1Cfom3/rLv/zkv/ur36Li/rrz/wA1J+dAh759H6jff+VKW9jojatc2rTCkT0h0q116xS0mneJUcPujAJ9Fl7x4MarP/8AG2lf8zuvgn5VfcV7FFOiFDt/k502C7guV1W63wTLKq4TmrAju8hV765fWWu4rtRuyHBKtD5bZP1TbGyGVmXI4gd2RkcPKiBQGoX9tpxaW6k2qyjaOZYgngB38xQSvhAbozbVumnTKw1++0uL9ETG2xtzZyqXyN39ZjOOPA1GyfKf0yhfbLZ6X/5SX/8AbReoRW9x0hn1mKObrnyYusbPVBgAdo7sgHy4n20jtelvrbj0kmvm4KZZ0ugZflZ6TD07TTP8GQf9dSU3yoawpWKCwtZ5WUNiOJz9wY0K4LekS32gP30zbwRW8zdUqr1npbeG4jiPuJ+FWfgq8i/iV7Ehe/Kb0gsLYT3elaeFZtqp1rbm4Z5AmovVPlM1jV9HaOO3itOsYq0kDEnaBxGTyzmmukdqbnR52SPdNCvWxqvPKjiB57dwqjRXkXzNIkb0+0q+3j/HtqrNhjCUUvJZinuTbHi8Q9P0v48a4ZlT+i/a/Kg2euht9dBIqCA+/wBOuxv2P4P40yDSoz6aUXEFk5oGtXOi6lFe2bfSJzHc6nmpHeD+4EcRWow/KlZtz0u6/uyIf31iqyUdYStL9Fu2/WrHqcSastxvmjVLr5Y9Hs5zFNpOqEDHaQREHgD64q3dGek1t0i0+K9tbe5ijk5LMFB5444JFfPPSSzWKKynT62+OTvOVIIJ9ob/AC1f/kX1VI5ZdJmbhJmSDd631l/f8awbUXNmyA12kqKVVYx6vV6vVCCSdtCyajZw/rJ1X20/L6FVnWYfS30yQCXbpBoyHa+p2ifamUfjXU1/R34Jqtizf2bhT++sr1WNeuah9Nh/ln92jtJZrS3VvNcq0M8cmxu1tYHnw7qlao+g39vFE1oNvXTyb04cSibcsfDiQAOHfzwavFCREer1er1KEbr1crtMKer1er1Qh6vV6qlrWuTSu0FhuWNeBdeb+w9w8++nx45TdIWc1FWya1XWLewTBbfP3Iv7/AVn2pX3zq4eW5k62XvXvA8gM4FLmtZZ93zmZgrN6CZGc+J5154Y7KFkto0Tw8yeAJ8T7a6uDTxh92YcmZyI6YdvavYX6qnPL8fGmCsv1PzqSki3225P6PkO9h3n9/8AvQqrv9HbWtKimxhJH39taVdv1Ma3H1EYMzeqvfn3E0/1UvgKU1s23enAd8b8Q1GgWIu7mOzXc3af6q/x3Vnd/ptml7DFb9j5xv6kd0b5G0Z8OO3yznuq56xbMkHWojbYo9vVt3DHPPf4Vn2pyM+V3diPP3/6Vh1fyqMjZpubQ2O3GD3GkjclellcRRLH2ohvOMcQ7YzjywF4eOcc6cU709GrISsdo8r0oP8AWrm2vBKtEPM1EWc7QzdbQ2KdVaqmrGRYYpINQh6qRftL3+0URZRJYSxTQSNHJGwZGXmpHnVfhfb2lqct9QSDT5Z5oUlmKlY+Poychw7xnHD21z82LZyui6E74L1Y/KLJs23HGVeyxVeFHxfKLC525X+Dj8Risos2mRO1CG3NufJxxPupy1VuuuH+q68P7PbJwf2qzlhra/KBF6h/ZNePT1fUWs99SX+s4/3hzHx4+xhRUcfzhGi7I61TH2iccRjjjj30VQC5np7G/olaHm6Ri8GUTh/Zqra5oFjF0Ntr2GyCri44CUnv7H7OKumhdDp7HSoIobmKWPDMuM4VWJYKPIAge7uoKUX0w012QEsL3D7jEyfa4U/a2nVfab0ql73T57P+cIB9VW9b2UMFogDdE0pfnP6U+cS7lXqOoz2O9t3t5irxEfok+yKqOjTvlLPb2Gk37vYuMVbbf9Sn2RSSCh2vV6vUoRqu1wV6mFO1zNeoPU71LG2aZuf1V8T4UUrdIjdAXSO/EFo0KN9LIuD/AGR3n91U+N5E9J91cvLyWeVpJDudqYWVGOFbD+q3A11sGHZE5+XJuY/JOfVoO9l3ojJ9b/b/AKs0ozY7M1Bzblk2j0Xzj+yRxx91bIooJCOTsJQzx7Js/Vb0fypMDb4aVA/Wo6P6Ubbf9aehRwRCubGX0G2e3lXlP8furpaReTR/CoQbnRpYtrgert7jWY6nadXqjWsnZSTs+eR6JNaluDHZNER51TunGmAQrqKNxiYB/ZyB+OPjVOWKlFpl2GTjIgdD0u6l1S3soU3TiTGxsYK9+fLzq9X3QVX6zZcWy3QXd1ERPHgT3jnwPhUBoGs2Y1KC5njIVF6qTDYd8kYwPAcj7a0XTdR06K9kubU7jcbd7sMFsZxz4954HxrhaieXFNKL48M7umjjyQdrnyZjJ0ekBxJMiHwYHNPXfQ3VreHr1gMo9JgmcgeODzrXLfT9Lmn+drAkkvpbjxIqJ6fau+j6O91bq7zIyDYvepIBzzwPPFNHW5bSFlpcattmOCEgkEEEcwaXtoXUdcu9SvhcLBFGm3G0EtvOTklu8mmhq8f17Z1byIP41vjnjJc8GGWNp8ckkEJOAuXPorU2ukyNDGp9GDgftn8s1UrbpFc2lx1trbwZPZHWqWI8xxGDUtZ9PbmO6We606G4QYzGspReC7R3H21mzZVLhdDQi0WYWm1OxUXu2ahKv95fZgZ/GmLTp3asf5bpk6L4QyKx+/FDydJNMe8aVYbuKJlC/SICefkT4Cs5YWHr1S22uvYaQMG/qzg5z5EfeFpV65i067YS9UywNiTdjacHjnuqBXpDpsts6GV1f0lUxkZYcQPiKdv9c017W6s/nB694Sq4Unjjh5Z5VCA130ombohp1j+mZHI67rYWhXMeGwgzjPaU548a1b5NNWuP+z2nPLOZ0kh3P2vQ8vdy/M1TdI1Do/pfRixm1TRBeXDtJsfqkwdrk5GSM+kB5bfjaOies2Op2XWWapCzZzAAF2gcOQ4d3d354nnQUUuiOVk1q0k09yzM4bwB4ADwFR22XwHxqQlG+mwKNEHNG60agm9fqn8Ku1v+oj+yKqOnD+Up76ttr/NovsilkRDua9mhLm3URPJGzo65YEE8/ZTlhK01lBLJ6bxqx94pBhSGu0gHt0rNMKeY4qh9I9T+eXOFb6KPsr5+Jqw9Jr/5taCNG+knyPsr3n93vqhTSVv0eG/mZl1GT8qO793Lg/gfrUzL9LwYMpX0TyNIcq3pjPl3020uBtnJaPul719v511UjExYuCPorrtL3SeHtr0h4bc7XPGNh6JI486aO5WAJyO4j61dAXZjH0Z+r4/lTUA9b3CwT9Ww7Ddoew8/geFES/QXCTDjHJ2ZPIdxqPmjLboXbLplon9ZTzBo3T5SIlyOsQc1PpJ5edElByW7M/bPZ/GnGt879vZY+iRxHwrsGOYbcncfDyNFgUjZEQN8+oBEEEcQlVvT2lgwxyPeO45oPVL+zgsZBqqrErKUeN+IcHuHiOPt8asVwNlQOtxfOLGSJtPWeN8ll6wbj7POhLrgeL5Kz0d6PdbDJcPeNNAW+hwozjuLZ45xjhUyulPBxSbs+01EaNqDaLOZAkkmmyqu5XHbQYADe3GOHfV9gSG8t1ubR1kjPEMtcbUYm5fN+x08WZpfKA2Ec1unYmm/ax91HJ2t27tZ4HdxyPA55ijI7OnltKpUUugyyOXbKnedDNFurl7nq5IS+N6RNhO7PDuzjuoW66C6I/6triL/AMTNXV7QUNNa0wtmbXvQWCHcLe9mc+q6DP3VCjoxO14lsZFilZdwEikZ5/kfhWpQ2jTavbxf95ub3cajOk8DRdJrRk/pDj3bJ/8A2Ur4Hgt3H2spB6Ba20iCCOCUuhlUCXBKjOeHuNFx6RFpbvZa3otwk6czHID760uYfo670mVuaWEm/wA+w7H8aqvTLULWTVL3UWcgB8Jz9Fdin7yaZNIHLVkLDY9H3Jk6vUrYKCQxi3AY5n40wdDsLzUY47DVbaSeZpDHFMOrJfIAUE8MncceO2g55XuYYpHnlWIkJMiSkDYfSUDzOBjvqPugkU5gtw7qkmEZj2hGTwBHiBg1LT8EontRbHRLRoJgytHPcrtPMdpOHtzV7+S7o/Y3nQyz1G63LNBcORIh4kq/LHeDy99Z7fM7dF9KMis7NNNu3eOUOffmtC+SDU5bPS7W3bhDK8g2H6p3Hj76E1ZEy1yLjmjD3UI5q7u25GyoPtFVkdII2H0umwn7OPypLCM6efplq32v82i+yKiIZLeS0S8S3SMt2eAqYtv5vH9kUJEQm7/m0v2aVB+oj+yKRe/zZvd+Ipy3/UR/YH4Ugwy57ddLYGScU1cna9Rmu3nzfSZDntudi/v+7NWxjuaSK26VlU16/wDnl88iserHBPYPz5++oWV6fneg5DXdxQUVSOdN27Pbq6Pv8KZzSwavK2NtvtyRGuYjziPd5rSopUkUtC2U7/FfaKcwG+sRQlzZq7dZDMYZBydOFQgUY9+3v29oY+rS1jkeYSJMgfv7vuoTTb9reTqL7Ak5CXHBx41NFI5FUgKV7j3VCPgbhuWhbZdJ1Tet9VvYak4ZARkEEeINA9SEO3LY71zz+PClC3jU5H0beXZpJEQTOu6oa+Xq/EfZGTUhIs6jKyFvcDQE1rPcHa7FsfVzgD4VPBEV97Zb9J1jVlCyYy3fyP78e2rB0U0a4is5J0kkiV5MqqnmAOJ/d7qCSNY5JVTlvEaKPrHPH781oujm0vbCGSywIQNuzvTHca5nxBtY0l58nR0aTm2yLj+eQ+myS+0YPxolLuMelDIv31LtZJXDpwrkKc0b3DGyLa7g8H/YpmWe38T8KmH02PZQM1kifVb9qn9aS8C+jB+SK00JHqLXDK20KdvZzxoPU9Nk1S9s7th1Qte1x47+Eg4/4pPuqbcxxp2iF99Q8t5dXJaO2CqniVJoPK32WY8EVzYvV7kX5hZFty8BYEM2AwIxg+HDNZ50gtUlkgiuJ1mMKt1uwdneW3fHj9wqe6Qafdx2vWSW5lkf05VJGB4Yqt6rayWunzyyyLFMikxrzVwMfeScVRPLkk9sf9nY0uk0mKHr5XaXS+5DCYWrxQyxSHdvRSF/W7mBHPhlTn3GgLu3urK7Md2JEnZFlUHg2HUMpPuI94PhROn9JZZNR0+bU1imtbSdZzGFxwBBOPcD99XT5S9Cv9S6ZwT2Nr18d1YoFlxhVKsclj3YGD9nNbY3Vs8/lcHN7OvBzT+ierdJujdlc201raWxeU4LE4IcJ+MZOPMVMdGLI6ZaRWsMnXPbzyIJRyd1kYZHlkVmMV9dJo8SwXNzFGZGbq0mZUyQvDAOPE/GtH6D4fo1YOhICBl9hDtw9vKnaoqNZiuJ/wBE9dPGBP1ZOzu5VTQOFPi7uWi6triRk8zSMUgyJ6wk36PEvqy7fxqx2v8ANYvsD8Kp1jM5aKDOFRCRjvPjVytx/Jo/sD8KEiIAu7hruBra0RnaRdpk5BfM1IwoI4kQfVUL8K6FA7IAHsFKpBiM1Ftm2ql0nut8scP1VXPvP+n41adZO2Dd4N/H41n2oXRnu5Xi7eWxk8hit2kjcrMud0qApiaGZj4U7JNOeQWmczP4fCuxFGJidy+Fc63jjNNzzRxHbNcIG9QcT8BTBn6wfyayklPrydkU4Atbgk4Cg0mS/SMhcqJTyQDLfDnQRtrmU4ubvYO6G1HE+1qNtLSG2jIjjEPHuO5z7W51CcIYnhurlDhBEAPSk7TfDu99CW2syaHItvI010C3FcZbj3+weFT6xPKgXARB49/soW7gtLWLKlVdvrHixoSQYyXTJm1nhuod1s3ntPGiFdVJz2cc+8D2+FZ89/PZXAa3VlV24hhxc+z99Wiw1Vb1I0uAFuCuerZsP8e+qmw7K5JkoDxJG3+yaYky3CAHPrtwoRre4H82uNhPdIuR8a6G1bujtG/tb2/KiChqKJYrtZJV4RNvL+JwfzoPTdWn0+8E1o5Rc4Kn0cd5PsH4UXNp+oXDBJZYlB5Bcn4ULe2PzDTXlAJ2vtkJGScDl78Ae+knFSVMeEnF2i36N0luL1HFyba3li9JXJAYHkQfx8KmEvJmUMGRlPIjiDWa3dktxbvbSZxv2hgcFT4jzqy6HA1tpsaWtw5hJ3drmD3/AIVytVixYVuN+CeXK6TRZGvpl49nFRl1rFwz7Ydrt5rw99CyxuxzJK7D1c06iKidkAVzZZl+VHQhgl3JjEsclw6G62hU5Kox8akbOAKN6GmYjH1TtIRtVcZ7s1JWdrtsUdj227R2twqtJt2XOSSoitf2/MmYyqu3ATh35xxqj61BBd9GdWlulXrllXqyp9HBHAZ8f+qrd01YNpUlit3FDcSIzEsOOQCQOHI5FZzrttey6bqFvEX+kvfnGN2Mr2eC/An3VqxQfZlzZONpSJrYJo63IYCRpGXHlj/evpiIx3dqFQgQzxcNp5KwwMe418330k8tjawyzJ1cERERA5gszH7z+Fad8nvSLTdL6HQQ6lqcMcqGQjc+SgJO0e3/AErTwnRjZnktmtvatbh0URSOAz8MgHbn4qfga2X5IbOD/sNEZMSia5lfiOAOQuB+zWLLLnR4RI7vIcnOe8kE+/JPvPnWyfJKZbboWTMXCvdO0W7ns2qPxDfjSNhLNf21lAcJGd/cN1Rhp64l61t1MkUBgjSx/LP7p/EVd4f1SfZH4VSdL/nP9394q7x+gvsFLIKF16vV6kCVTptqSadpUe5C8l1cJbxqvexBP4KTVGe4253xgEckQZP5CrV0wu7e4uY7HKFrVhMQeaMVIBH91j8arM0UYQ7iOHLjjP511tIqiYc7tgUt2W9FQvkBuNAyJLNwYyN4bm259wouW5UlktU3Z/pDwVff30MYpHkzJIfHaOZ8gK6ETM+BIjht+GUA5hYxxJrskkrqA56lMcFHpNRCWhUAjbEPHmzeylrHHEDsi3P3szY95phbEW0DkbUXq18frUXm2tADcON/lxOfZQpmJ/XXSRJ/3J4/HnXYrmxg/VRvI3iF/eaNgqxc15cTfql+bxes3Fz7B3UOIGJygCjPGeXiT7PCk3Wp7N0sixRBjzkbJ9wqF1HVZrhdlmzuT/Snhj7Iqmc0i2MWP6pqFnpylbdesnK8ZX5/x+FVF5ZnueveRhIWyrccr/A/dT5gdmZmLOFPEscknw/jwryoVc7wcNxc9/s/jxrNKe58l8Y10Wzo90skTbHqKuwXsCcDJJ8x++r3Z3sc0SSRFJI2OMr4fnWRGaCFX6x1Uj0dvcO7FSOh6z+j7hCqSvZSsEkijyD4AjzH76ZZL7Flj9jRNXWWN0vbbJVMKRyx50/Egvwkxi+haMho3HJ92PwXPsoi30mzu7EPbSbjNDtFxkl2VuPPmeQ58sVLQ2rKqqCD3ZUD48KSWVIVRKzqOlqj7oScKvLxOME+2puy057axjR8BxxYDkCe6pBLPqj10wCnuB5Ck3F3bg9qUf3eJrl6zO81Y4c+509JhWL558EXNG+/bgYqK1LU4bcMEZZWB2Mqnk3nUhdXBldjEpC+GagptEgnuFuTFslU5G04+Piaox6auZF2XVJ8RECWaeJGlc9rjtHAU5HHKzYR3UeAOKJhsVjQLjaBzOeVBr0h0OCbq21CPevpEAkA+FafkijNGOTI/lTbHZrDfDI0udwy2Sck+2qp0Shnk0WIagswlRigEyEMBwxzqU1LphLNLHDodi0xfj1kik59i/nUfp/SqV5JI9StxhfSkUbWQeO3+DU4slSVqSIvV+jE0Ny9xZwm6tS5cRD0o88SMd4H+lRq2OmyS7r2x1FGP9DbQ7T944Vq0doyU8LYk9pc+dOJZmOk6NJ0k1k2ZiXTbS1jVmtlJ3KmeAyeO47uJPjWqWsUtnbi3g6tIUACoF4YAxQFjolrBrt1qqCQXM6BHbrDtYYAHDl9UVN4pJBBd8v1olb2NXet/wC7b4U/trmylGHNLZXuHxuHZ8KvK8hVL01fpn+zV1FLIiO16uZrmTSDFD6XaVJPqHzm1IEphGVYel4fcKoemCHVruQiSbdt3nKjEYHDGPbitS176O4t3Kk4Xx5cay/RLONNevrbgp62SPOTyEu3l7cVs0+WTuL8dFOXGklL3EXF0Y7gW8RBIleNgAMrsYrnn4AfGmg88UgVZYxkcUU4Zj5HjR9m4nkNwLCItLI/FkHWklmOcNjHDcQPLFddZlxLFbOiB2KuIxGpbaeHAHJ58B4V04ZODDKLTA3vIoVInhvsqV3KSG9Ll38fhUfdazaQsFEMkbZIIkyCcc6k554mh655izSRIOrAPdk7SCSRjPlzqGvILN5nNyUigdGDGTK8znnzPf399FzdWiRSumPRal1xZrdrYFSA2/eSM8s8BTFxqZiT6W4Df2YVwPieNOS6jd2kM1jLN1tuzEQwBRvkYnHWNgcOHjxJOe6oYgO4kue1luCryZs5A9g558aWMpSTsMkkwy3Vb6dZLhcBshUPHgO/PcTzz3UuOPqkKDi3ivD2ezx+6hVJR95OR3DluPl5D76RLflyI4u0x7vDzJ8f440k+BouwpzEvEAcBy7jnx+A++gpWa4/Vrju3d/sxSoonl+kdSwHdyA/186PiWJgeHADJA7u/nVQ9kaumlu0e0c8c8yfCkOsqNsTOTwP5AVNZ6xG+jbl3+H8fv4UrT9Nm1O4EVuMk8Xf6qAeNKl5Du8C+j/SvW7K3NhBIvVqS5mddzceag+AOT7zVz6LdINfit3WaRJYGJ6t5ky+TxxnvA8/ZXbPo9bwwrD1IZF7Q3DJLd5qbgsAAAE2geioHAUJ5scsW3bb9wLHNZd10vYYea6uTumd38s05Fas/jUlBY+R+FGR2oQ476ypJdGhtvsjI7Hyp8Wi5xjjUhsHjVP6S9NrHTC1vp4W8uV4ZH6tT5nvPs+NJPJGCtsu0+my6iW3GrKr8oGtXZvm0u1zb2sbbZweDz5A5eCjiPbVJCjfxXh6i8KsItta6WaiZGV7ibPFsYSP38h7OdXXQvk/s7MLNqZW6nH9FyjX295/DyrDLfnlwuD02GOn+GY//SVyfsZ1pGk6rfzBtISUShW2zAlUU/a5fCtVvNCsrsg3VtG7HHEjjwqN1+eWz1NILi4eK13p1cFvhcxngScYzggnz5VKaO6vJ1dnbTG1bLPPKxBJHAcCB7a2YceyNXZwNdqVqcm9RoMENLEQoW7vWt9YsLFACtzHM7E8xsCn/qper3UtjYTXMAUyR7SqsfS4jh7xw99WbkZNj4+48sQ35pe2uQTR3MSSwOGjfk/LFOUt2SqGiKTinDSTQCEaaPpnq4VUtN/XfCrbSSCjtcrtepRik9KtZtobmK1huYvnRySuM4HP/pPwqgfOIo7i5mQAzPIW3gDGd2c8fPB8u6tM0/R9FtEaxtkiecLtm+kDTMMfW7+88OVZFrVnd6brN3ZvFxgYqZm7MbLjKnOO9TxABx7q16VR5sz53Lig0LvnjMDmMRoEA+qASSSeXInPfwzXbqa4v0FnNNJHb7usWFWwdx8uXrce7j45oGSL+UtEzRyELtYEZD5zk+wj945ijp3t7Y2s0kNzdLtYOqSBCDg8+HLlx48Tx89slGjNHdYG9pK0hhsyYEHLq13OBz458+7A491AraQw3DNbSs068Dcud8gPeU7h7efP2UZYyNdRj5yjMOW2NyFJ7wR9U8uGccOfACi7+WG0tlFukEbPwjQx8T5/vJp03L6gOovgrk8QtFUjbukHBc5dh/tzNcSF2UySBtzdlUC+ivh7PL45qQt4BJJLKGyw4PJjIB8FHj5U6rLOpjhG4cN0nLHv/wBaexGQ5jMkoRwR3kt6RHnSfm9rG7BpY7fLZG5sE8fCpK4g6tGDbtp5HHf7aGZQHKyKkg28Ay5I9lLNWgwdM4VtIRuknjdu5S+7Pu/gU+L+FVCW0ZkAcEYXYM8fz8B++hUhszkJHGGGAWPAf7cauUfQFlk4Xcu3d6Ozj8c4+6s0nXZelfRCaNp1zrN2LaHj3yEeio8T8eVabpWh2+nWwiijH9rxY+JpnRYl0a0FtBZYX6zhu0x8TUxFqNufTSVPao/dWfJlvhdFsIUdish4UVFailQ3Fu57E0Z+78aLVc8hn2VXY9DKxheVAavq1ho1sZtQnCeCLxZ/IDv/AAqsdJ+m1xb3t3pulwBWtSqzTuRwJGeyp9owTn2DnUXofRDUekM36Q1qaRIZcMC+S8g9/IeZ9wxWeed3tguTqYPh8dvraiW2Pt5YBrXSXV+k8xsdKgkhgkPCKLJZxy4n/YeffUtoHydBAs2tPlsZ6hG/9TfuFXzTNIs9JhMVjbpEpGHI4s/mT30WVoQwW903b/gszfFNkPS00dq/lgNvZQ2kSxQQxwoo4Ig2jFQnS7pNp/RXThcXf0txK2Le2T0pW8vAefuFSWuaqNNsLuWGL5zPbWslz1CnB2qpIJ8ASMDHHu7iR8/anqN3repvqOpSGWduAP1UUfVUdyjiPjnOc1pS8I5Tbk9zdktB0lv9Q6UNesxAnysEcmCisRhNwxxAPLw4HupU/wAoXSJ9PeLr4kcuXEscQVlC8doxw48uX5VXgXRxJEdrIQUPnzFNXwHXT9X6DSFlx6p4j7iKWqYaTjZO2HSnV7vXrS8nvN84bqxuQbQjEBgB3A4Gat2o68vSHoKL+1Xqm3qlxEDxjbhkeziD5gjzrLej827VLQHn1sf3sKl+iN4sMvzSV9kV8ghdeJDMQdp54zv2kHB4FuWaHDbTHd7Yv7v+i7/J9fFL2WzZ+xKm4DPDcPD2gk+6r9WO6HcyWWo2syg9bHcKjJ3kHgR8M1sOaYqfZw0k0pqQaUIXpn85+FW6qdpbfy4IOYZcjw41caWQUer1cr1KE+Y2gkubiRy7lmYs8gPaJ7znxP3UDrWvXdyydaWkuIcJHdM5LNHxyjE8WAJ4HwznPDEq99FbxNbgekMee3vP8efvibtrYt1gKgeDtj8Kvj3Ysl4CdD1GOaYW8txFCVUlAxx2sDIyeYYDvOBheXGp2dpkyiupIYqUzx8+B/DHjVGk0952zDkov10Gcd/Dx8fuo6y1I2TfNbxhOqdkNjtqfLPAjyOPdzrTj1CTqRRPC+0T0hvFcSxKsSnhuBUAcOGQcZ/HuyBREJvZwWvbmwixgZefJPd7TnyzjywDTMV/A0UciQptkJ2uOCty4cRnPEc/GnynWf0aru5YI4+HMHFak76Mz47DmgwoSYBogNqsvCPGOHL/AGpZeWRdsbQnZ6OFwR8B+FMWiywS9a6h4du0xmQ7QDzxgD31IW6WLcZ7JI0bPFWJK8+Y7/dj2HnRsDQGbdmGw3MQJ5buBoG5tDEo2448ivKpZ7a2QhxCIw3BGQ53fgaS1vCBvUAM2e2rHDY8/wA6YUh7Bra3uf5ZarcQPwkRQAR5jP4f71pC9MtERYhc6gLeaVQyi9t2QMOZww7OfLNUG8tkXeMg92OX8CoLVNNiuBk9iReCyY7QHgfEc+X++bPic+Y9l+HIlwzco9W0WYqE1PTGLeiFvIzn76NeCA4ym3IyMceHjwr5ils3iciSNVYDIJwcfZrSPke165+e3GiO5e06prmHcx+jYMoIXyIfPDGMeJNYGmjXwakbOFu0CpPtxXhZNFwRmX2EilrIBzC07GVAwOB8VOPwxQslEbNoltLd/OZbSCWYAYd4gTnu55z3VI/PbqPHWQxuMY5EHh3U8CV9CRj8Pyz99cYuOao3syv51EooLlJpeUuhr9LRIM3FvKo8VOfyofUNf0uGykl6x9yjsw7Dlj3Dw50zfsqL2onB8Vwf9aoPSG/inWNIGPp54gjIAPj51XqJ+njc14NGhwfiNRDE/LA+h2pSSfKJqcGtTHOtWz2ysc4yQCijuC7VcDzOKz90ktN1tPjr4iUdR6y9k8fbmrR0gjkudP6y0i/llsVlimVsNEQc8Pu4e/mKg+kWqW+rmG/j00Wl86ZvzFISs8nrKn1cgZPmTzIyV0mdZcd+TR8T0b0ufb4fKIljKxy5IHhXslY+0fqBvcVBH3YpDyyyeiEX3ZpaszmFpgAxhCsBy7LEfhitD7MK+ljGhnbr9unq3aD3dYPzr0bEwqMnioxjgR3g57qTpR29JLT+1cxH4kGlQ8IlB8KSP1MeX+JfqzSOhmu6JqV3CNVgjh1p32rMeCTtyB8Fc55YwTy4kCtHyBzIr5raZ0I6vcr5DB1+oRxz5ccV9BaPqR1PSLPUDH1XziJJWTduC5HHFPZVRJMaaZqbaUjnQ8k3nSsJ3oet4upXX6QKmRr36MK+4GLOVPLgcHB9laPWe9HJN2s8f6yP91aFSMPk9XK9SSahD501foRrcMrv1InQnA2HBAqAW1vLGYtc2s0RXh2kPM9+eVfTt0iFOKr8KrmqQQsj7ooz7VFNfBPJh1nfAy5kORt78YoSLqJNKvZZcCVULQ5HM55eXvq7dMrO1S2YrbQr2X5RiqxoMUb29/I0aM8EaGFivGM55r4e6ngtzok3SsAWyktJHW2vpCoO53dSFcgHAxw48SO/AyR5kWmpukvVy2w3gYOx+yR4jypc36u382lz58TQ2sgCPIGCqnBHdxNdCK2rgwuVvkn7XUkCem8a+rIOH3cKlrGUPuMcykd6+v7xxqo6ZI7WybnY+0+dS1qSu3BI58qsXJW1Rat4yVMkxH1dgPs9nv8Abx5UnfAuWP0SrnbtBwe7LcseQ8ufHiDbk9nifRNSkxJwSeJXnRFBLiIxyiKYdtl3YVeBXxI5VG3VofqgbPBef8cqnI+1emNuKCQdk8vSFR8npt/HhUshWb+zSbKFdyE8uRB8fbVh+SnS1t9avr95V2xW/UxqW7TbiGZmHPA2j4+VRc/p/wB6nOjTsvSuyCsQGuACAeYxyrPmgnGy7FNrg1lpco3GikfKcONRy0bB6C1z0bGGRP504zULHXSTRFInWZCcwxMSvKRh3A8ce0/cM+VZp0qujBfQKqhQEfOfditHbjFOTz6xvxNZJ04J/SEnE8Ix+LVRqI7obX5o6XwzJ6Oo9SraT/4AXmsGaNrWAlYh2pX73PcPL+PfX9RmLJiJiBH6hOPf40RH/N5D3lqAm9CX7NWY8McUaiVarW5NTLdPyGJIuzlTzLj5tkelDn/O9CReh/d/KnEJNvZkkk9Sf/yPVknyjPD6Zfp/aB7VhF0htJCQAJ0OT5Nj91PiPaXhYYcM2c92Cc0De8L6Ijhx/wCo1LXv/wDaXX/3M3/qNIvrGfOL9yN6xoJklAB24ODyI7wavPydarM+mSWvzh1Ns42gMfQbiB7iG+6qHdfq3qw9CjjpZfqOC7JeA5emKL7E3OjU7fU5e9wfbUhDOs31RVcj9OprTqBGSeiqIukFvGPrFWx7z+VaAzAYyRx5edZ/pv8A/q7P7I/F6tXSJmjW36tivaPonHdQYCU3DxFeyviPjUPpEjyxZldnP9o5owE0QWf/2Q==" class="card-img-top" alt="Plombier">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Plombiers</h5>
+                            <p class="card-text text-muted">Résolvez tous vos problèmes de plomberie avec nos experts.</p>
+                            <a href="#" class="btn btn-outline-primary">Voir les profils</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Électricien">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Électriciens</h5>
+                            <p class="card-text text-muted">Installations et réparations électriques en toute sécurité.</p>
+                            <a href="#" class="btn btn-outline-primary">Voir les profils</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Peintre">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Peintres</h5>
+                            <p class="card-text text-muted">Donnez une nouvelle vie à vos murs avec nos peintres professionnels.</p>
+                            <a href="#" class="btn btn-outline-primary">Voir les profils</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Pourquoi choisir Hirafiyin ?</h2>
+                <p class="lead text-muted">La solution complète pour tous vos besoins en artisanat</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Trouvez facilement</h3>
+                        <p class="text-muted">Recherchez des artisans qualifiés près de chez vous en quelques clics.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Artisans vérifiés</h3>
+                        <p class="text-muted">Tous nos artisans sont vérifiés et évalués par la communauté.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Paiement sécurisé</h3>
+                        <p class="text-muted">Système de paiement intégré et sécurisé pour votre tranquillité d'esprit.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Messagerie instantanée</h3>
+                        <p class="text-muted">Communiquez directement avec les artisans via notre plateforme.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Réservation en ligne</h3>
+                        <p class="text-muted">Planifiez des rendez-vous selon vos disponibilités.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Garantie de qualité</h3>
+                        <p class="text-muted">Nous garantissons la qualité des services fournis par nos artisans.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Ce que disent nos clients</h2>
+                <p class="lead text-muted">Découvrez les expériences de nos utilisateurs</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card bg-white">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-4">"J'ai trouvé un excellent plombier en moins de 10 minutes. Le service était rapide et professionnel."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle me-3" width="50" alt="Client">
+                            <div>
+                                <h6 class="mb-0">Sophie Martin</h6>
+                                <small class="text-muted">Alger</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card bg-white">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="mb-4">"L'électricien que j'ai contacté est arrivé à l'heure et a résolu mon problème en un temps record. Je recommande!"</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-3" width="50" alt="Client">
+                            <div>
+                                <h6 class="mb-0">Karim Boudiaf</h6>
+                                <small class="text-muted">Oran</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card bg-white">
+                        <div class="mb-3 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="mb-4">"La peinture de mon appartement a été faite avec soin et dans les délais. Très satisfaite du résultat final."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-3" width="50" alt="Client">
+                            <div>
+                                <h6 class="mb-0">Leila Boukadoum</h6>
+                                <small class="text-muted">Constantine</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center py-5">
+            <h2 class="display-5 fw-bold mb-4">Prêt à trouver l'artisan parfait ?</h2>
+            <p class="lead mb-5">Rejoignez notre communauté dès aujourd'hui</p>
+            <a href="register.html" class="btn btn-light btn-lg px-5 py-3 fw-bold">Commencer maintenant</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h2 class="display-5 fw-bold mb-4">Contactez-nous</h2>
+                    <p class="lead text-muted">Vous avez des questions ? Notre équipe est là pour vous aider.</p>
+                    
+                    <div class="mt-5">
+                        <div class="d-flex mb-4">
+                            <div class="me-4 text-primary">
+                                <i class="fas fa-map-marker-alt fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Adresse</h5>
+                                <p class="text-muted mb-0">123 Rue des Artisans, Alger, Algérie</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="me-4 text-primary">
+                                <i class="fas fa-phone-alt fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Téléphone</h5>
+                                <p class="text-muted mb-0">+213 123 456 789</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex">
+                            <div class="me-4 text-primary">
+                                <i class="fas fa-envelope fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5>Email</h5>
+                                <p class="text-muted mb-0">contact@hirafiyin.dz</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-5">
+                            <h3 class="mb-4">Envoyez-nous un message</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Votre nom">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control form-control-lg" placeholder="Votre email">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Sujet">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control form-control-lg" rows="5" placeholder="Votre message"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Envoyer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">Hirafiyin</h5>
+                    <p>La plateforme de référence pour trouver des artisans qualifiés en Algérie.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Liens utiles</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white">Accueil</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">À propos</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Services</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Artisans</a></li>
+                        <li><a href="#" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Catégories</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white">Plombiers</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Électriciens</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Peintres</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Menuisiers</a></li>
+                        <li><a href="#" class="text-white">Plus...</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="text-uppercase mb-4">Newsletter</h5>
+                    <p>Abonnez-vous pour recevoir nos dernières actualités et offres.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Votre email">
+                        <button class="btn btn-primary" type="button">S'abonner</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 Hirafiyin. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Video Slideshow Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const videos = [
+            document.getElementById('video1'),
+            document.getElementById('video2'),
+            document.getElementById('video3')
+        ];
+        
+        let currentVideo = 0;
+        
+        // تهيئة الفيديو الأول
+        videos[currentVideo].classList.add('active-video');
+        videos[currentVideo].play();
+        
+        // دالة تغيير الفيديو
+        function changeVideo() {
+            // إخفاء الفيديو الحالي بانزلاق إلى اليسار
+            videos[currentVideo].classList.add('slide-out-left');
+            videos[currentVideo].classList.remove('active-video');
+            
+            setTimeout(() => {
+                videos[currentVideo].classList.add('d-none');
+                videos[currentVideo].classList.remove('slide-out-left');
+                
+                // الانتقال إلى الفيديو التالي
+                currentVideo = (currentVideo + 1) % videos.length;
+                
+                // إعداد الفيديو الجديد للدخول من اليمين
+                videos[currentVideo].classList.remove('d-none');
+                videos[currentVideo].classList.add('slide-in-right');
+                
+                // إضافة تأثير الدخول بعد فترة قصيرة
+                setTimeout(() => {
+                    videos[currentVideo].classList.remove('slide-in-right');
+                    videos[currentVideo].classList.add('active-video');
+                    videos[currentVideo].currentTime = 0;
+                    videos[currentVideo].play();
+                }, 50);
+            }, 1000); // يتناسب مع مدة الانتقال في CSS
+        }
+        
+        // تغيير الفيديو كل 8 ثواني
+        setInterval(changeVideo, 8000);
+    });
+    </script>
+</body>
+</html>
